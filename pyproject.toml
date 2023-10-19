@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "network-analysis-assignment1"
+version = "0.1.0"
+description = "Assignment number 1 for network analysis using bn-mouse-kasthuri_graph_v4"
+authors = ["Szymon (siponek) Zinkowicz <szinkowicz+github@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = { version = "^3.11", markers = "python_version >= '3.11'" }
+black = { version = "^21.9", markers = "python_version >= '3.11'" }
+networkx =  { version ="^2.6.3", markers = "python_version >= '3.11'" }
+seaborn = { version ="^0.13.0", markers = "python_version >= '3.11'" }
+numpy = { version ="^1.21.2", markers = "python_version >= '3.11'" }
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
