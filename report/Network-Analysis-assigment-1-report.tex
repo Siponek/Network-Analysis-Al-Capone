@@ -109,7 +109,7 @@
 %----------------------------------------------------------------------------------------
 \begin{abstract}
 	\thispagestyle{empty}
-	This report presents an exhaustive network analysis of the "mouse-kasthuri-graph-v4" dataset, a brain network derived from the somatosensory cortex of a mouse. Utilizing Python libraries, this study explores the structural and functional connectivity through various network metrics to assess the graph's resemblance to theoretical network models, such as random and power-law networks. The dataset comprises 1,029 nodes and 1,559 edges, exhibiting a sparse connectivity with an average degree of approximately 3.03. Initial findings suggest the absence of triangles, indicating a lack of local clustering typical to brain networks. Through detailed computations including degree distribution, betweenness centrality, assortativity, and community detection, this analysis characterizes the graph's topology, identifies crucial nodes, and evaluates network robustness and efficiency. Comparisons with random graph models highlight significant deviations, suggesting a structured yet not densely connected network, typical of many biological systems. The report aims to contribute to the understanding of neurological structures and potentially aid in understanding neurobiological processes and disorders.\\
+	This report presents an exhaustive network analysis of the "mouse-kasthuri-graph-v4" dataset, a brain network derived from the somatosensory cortex of a mouse. Utilizing Python libraries, this study explores the structural and functional connectivity through various network metrics to assess the graph's resemblance to theoretical network models, such as random and power-law networks.\\
 	
 \end{abstract}
 \pagebreak
@@ -188,7 +188,7 @@ This section of the report presents the key findings from the analysis of the "m
 
 	The degree distribution of the network was analyzed to assess the connectivity patterns of the nodes. The distribution shows a skewed pattern, suggesting that while most nodes have a low degree of connectivity, a few nodes act as hubs with significantly higher connections. This pattern is inconsistent with random networks, which typically exhibit a Poisson degree distribution, and is more characteristic of scale-free networks.
 
-	\begin{figure}[!ht]
+	\begin{figure}[H]
 		\centering
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{../out/img/degree_distribution.png}
@@ -196,7 +196,7 @@ This section of the report presents the key findings from the analysis of the "m
 		\label{fig:deg_dist}
 	\end{figure}
 
-	\begin{figure}[!ht]
+	\begin{figure}[H]
 		\centering
 		\captionsetup{justification=centering}
 		\includegraphics[width=\textwidth]{../out/img/degree_distribution_log_log.png}
@@ -302,8 +302,8 @@ This section of the report presents the key findings from the analysis of the "m
 
 	The network's path analysis indicated:
 	\begin{itemize}
-		\item \textbf{Average Shortest Path Length: \num{4.913580399144251}} , The average path length across the network is relatively short, facilitating quick transmission of signals across the network. This is relatively short given the total number of nodes \textbf{1029} and diameter of the network \textbf{12}. This suggests a small-world characteristic since the path length is relatively low compared to the network size.
 		\item \textbf{Network Diameter(maximum separation between any two nodes): 12} , relatively larger diameter suggests that the network exhibits small-world properties.
+		\item \textbf{Average Shortest Path Length: \num{4.913580399144251}} , The average path length across the network is relatively short, facilitating quick transmission of signals across the network. This is relatively short given the total number of nodes \textbf{1029} and diameter of the network \textbf{12}. This suggests a small-world characteristic since the path length is relatively low compared to the network size.
 	\end{itemize}
 
 
@@ -348,6 +348,8 @@ This section of the report presents the key findings from the analysis of the "m
 	\pagebreak
 	\section{Conclusion}
 
-	The structural analysis of the mouse brain network reveals distinctly non-random characteristics when compared to theoretical random network models. The average clustering coefficient of the mouse brain network is \textbf{0.0}, significantly lower than that observed in comparable random networks, which have an average clustering coefficient of approximately \textbf{\num{0.0015579071134626692}}. Additionally, the original network structure deviates from randomness in terms of connectivity, as evidenced by the number of connected components— \textbf{20} in the mouse brain network compared to \textbf{53} in a random network of similar size. These findings suggest a tailored structural configuration in the mouse brain network that likely supports specific neurological functions or efficiency. The absence of clustering and reduced number of components may reflect evolutionary adaptations for optimized signal processing and energy conservation. Such unique structural features highlight the specialized nature of biological networks, underscoring their deviation from simple random connectivity and pointing towards a more complex, functionally driven architecture.
+	The dataset comprises 1,029 nodes and 1,559 edges, exhibiting a sparse connectivity with an average degree of approximately 3.03. Initial findings suggest the absence of triangles, indicating a lack of local clustering typical to brain networks. Through detailed computations including degree distribution, betweenness centrality, assortativity, and community detection, this analysis characterizes the graph's topology, identifies crucial nodes, and evaluates network robustness and efficiency. Comparisons with random graph models highlight significant deviations, suggesting a structured yet not densely connected network, typical of many biological systems.
+
+	The average clustering coefficient of the mouse brain network is \textbf{0.0}, significantly lower than that observed in comparable random networks, which have an average clustering coefficient of approximately \textbf{\num{0.0015579071134626692}}. Additionally, the original network structure deviates from randomness in terms of connectivity, as evidenced by the number of connected components— \textbf{20} in the mouse brain network compared to \textbf{53} in a random network of similar size. These findings suggest a tailored structural configuration in the mouse brain network that likely supports specific neurological functions or efficiency. The absence of clustering and reduced number of components may reflect evolutionary adaptations for optimized signal processing and energy conservation. Such unique structural features highlight the specialized nature of biological networks, underscoring their deviation from simple random connectivity and pointing towards a more complex, functionally driven architecture.
 
 \end{document}
