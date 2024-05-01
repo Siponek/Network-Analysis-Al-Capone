@@ -1,0 +1,281 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University/School Laboratory Report
+% This is for code review purposes only
+% 
+% Authors:
+% Szymon Zinkowicz
+%
+% License:
+% MIT
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	report, % Paper size, specify a4paper (A4) or letterpaper (US letter)
+	11pt, % Default font size, specify 10pt, 11pt or 12pt
+]{CSUniSchoolLabReport}
+
+\usepackage[table, dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption} % To have subfigures available
+\usepackage[export]{adjustbox}
+\usepackage{lipsum} % for mock text
+\usepackage{fancyhdr}
+\usepackage{csvsimple} % for reading csv
+\addbibresource{sample.bib} % Bibliography file (located in the same folder as the template)
+
+\hypersetup{
+	colorlinks=true,
+	linktoc=all,
+	linkcolor=blue,
+}
+
+\pagestyle{fancy}
+\fancyhead{} % clear all header fields
+\fancyfoot{} % clear all footer fields
+\fancyfoot[R]{\thepage} % page number in "outer" position of footer line
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{1pt}
+\renewcommand{\sectionmark}[1]{\markboth{\thesection. #1}{}}
+\fancyhead[L]{%
+  \begin{tabular}{@{}l@{}}
+  \leftmark\\
+  \rightmark
+  \end{tabular}%
+}
+\setlength{\headheight}{24pt}
+
+%----------------------------------------------------------------------------------------
+%	REPORT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{NETWORK ANALYSIS} % Report title
+\author{Szymon \textsc{Zinkowicz} \\ Matricola number: 5181814} % Author name(s)
+\date{\today} % Date of the report
+
+\begin{document}
+
+\maketitle % Insert the title, author, and date using the information specified above
+\thispagestyle{empty}
+
+\begin{center}
+	\vspace{\fill}
+	University of \textsc{Genova} \\
+	\begin{tabular}{l r}
+		Instructor: & Professor \textsc{Marina Ribaudo}
+	\end{tabular}
+\end{center}
+\pagebreak
+
+
+
+%----------------------------------------------------------------------------------------
+%	Abstract
+%----------------------------------------------------------------------------------------
+\begin{abstract}
+	\thispagestyle{empty}
+	This report presents an exhaustive network analysis of the "mouse-kasthuri-graph-v4" dataset, a brain network derived from the somatosensory cortex of a mouse. Utilizing Python libraries, this study explores the structural and functional connectivity through various network metrics to assess the graph's resemblance to theoretical network models, such as random and power-law networks. The dataset comprises 1,029 nodes and 1,559 edges, exhibiting a sparse connectivity with an average degree of approximately 3.03. Initial findings suggest the absence of triangles, indicating a lack of local clustering typical to brain networks. Through detailed computations including degree distribution, betweenness centrality, assortativity, and community detection, this analysis characterizes the graph's topology, identifies crucial nodes, and evaluates network robustness and efficiency. Comparisons with random graph models highlight significant deviations, suggesting a structured yet not densely connected network, typical of many biological systems. The report aims to contribute to the understanding of neurological structures and potentially aid in understanding neurobiological processes and disorders.\\
+	
+\end{abstract}
+\pagebreak
+
+%----------------------------------------------------------------------------------------
+%	Table of Contents
+%----------------------------------------------------------------------------------------
+\tableofcontents % Insert the table of contents
+\thispagestyle{empty}
+\pagebreak
+
+\section{Introduction}
+	\subsection{Methods}
+		In this study, it was performed an in-depth analysis of the "mouse-kasthuri-graph-v4" dataset to uncover the underlying structural and functional properties of the brain network. The following types of network analyses will be conducted:
+		\vspace{10pt}
+		\begin{itemize}
+		\item \textbf{Degree Distribution Analysis:} We calculate the degree of each node to understand the distribution pattern and compare it with random and scale-free networks.
+		\item \textbf{Centrality Measures:} This includes:
+		\begin{itemize}
+			\item Betweenness centrality to identify nodes that serve as bridges within the network.
+			\item Closeness centrality to find out how quickly information can spread from a given node to others in the network.
+			\item Eigenvector centrality to identify influential nodes in the network.
+		\end{itemize}
+		\item \textbf{Community Detection:} Using algorithms like the Louvain method and Greedy Modularity Optimization to identify clusters or communities within the network.
+		\item \textbf{Assortativity Coefficient:} We calculate the assortativity to examine the tendency of nodes to connect with others that are similar in terms of degree.
+		\item \textbf{Network Density and Sparsity:} Analyzing the overall density of the network to understand the fraction of potential connections that are actual connections.
+		\item \textbf{Path Length Analysis:}
+		\begin{itemize}
+			\item Calculation of average shortest path length to understand the efficiency of information transport across the network.
+			\item Network diameter to determine the longest of all the calculated shortest paths in the network.
+		\end{itemize}
+		\item \textbf{Clustering Coefficient:} To measure the degree to which nodes in the network tend to cluster together.
+		\item \textbf{Comparison with Random Network Models:} Comparing observed network metrics with those expected in random networks to contextualize the findings within established network theories.
+		\item \textbf{Connectivity Analysis:} Evaluating the robustness of the network by analyzing its connectivity and the size of its largest connected component.
+		\end{itemize}
+		\vspace{10pt}
+
+		The above analyses will be performed using Python libraries such as NetworkX, supplemented by visualizations created in Gephi to illustrate the network's characteristics visually.
+
+		\subsection{Dataset Description}
+
+		The dataset analyzed in this report, referred to as "mouse-kasthuri-graph-v4," originates from the somatosensory cortex of a mouse brain and was made available through the Neurodata's Kasthuri project. This dataset is particularly notable for its application in the study of complex neural networks within the brain.
+		
+		\subsubsection{Source and Collection}
+		
+		The "mouse-kasthuri-graph-v4" is part of a larger repository aimed at providing high-resolution electron microscopy data to the scientific community. The data was collected and processed by the Kasthuri lab and downloaded from \href{http://networkrepository.com/mouse-kasthuri-graph-v4.php}{networkrepository.com}.
+		
+		\subsubsection{Characteristics}
+		
+		The dataset features a network graph with the following properties:
+		\begin{itemize}
+			\item \textbf{Number of Nodes:} 1,029, representing various cellular components within the brain.
+			\item \textbf{Number of Edges:} 1,559, indicative of the synaptic connections between these components.
+			\item \textbf{Average Degree:} Approximately 3.03, reflecting the average number of connections per node.
+			\item \textbf{Network Type:} Unweighted and undirected, suitable for fundamental network analysis.
+		\end{itemize}
+		\vspace{10pt}
+		
+		The data enables exploration of neural connectivity and serves as a fundamental tool for understanding complex biological network patterns, reflecting both the functional and structural properties of the brain network.
+		
+\section{Analysis Findings}
+
+This section of the report presents the key findings from the analysis of the "mouse-kasthuri-graph-v4" dataset. The data was examined using various network metrics to reveal insights into the topology, efficiency, and characteristics of the brain network. The findings are organized into several subsections based on the type of analysis conducted.
+
+\subsection{General Characteristics}
+
+The network consists of a total of 1,029 nodes and 1,559 edges. These metrics indicate the scale of the network and the extent of connections among the nodes.
+
+\begin{itemize}
+    \item \textbf{Number of Nodes:} 1,029
+    \item \textbf{Number of Edges:} 1,559
+    \item \textbf{Average Degree:} 3.03
+\end{itemize}
+
+\subsection{Degree Distribution}
+
+The degree distribution of the network was analyzed to assess the connectivity patterns of the nodes. The distribution shows a skewed pattern, suggesting that while most nodes have a low degree of connectivity, a few nodes act as hubs with significantly higher connections. This pattern is inconsistent with random networks, which typically exhibit a Poisson degree distribution, and is more characteristic of scale-free networks.
+
+\begin{figure}[h]
+    \centering
+	\includegraphics[width=\textwidth]{../out/img/degree_distribution.png}
+    \caption{Degree distribution of the "mouse-kasthuri-graph-v4" dataset.}
+    \label{fig:deg_dist}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+	\includegraphics[width=\textwidth]{../out/img/degree_distribution_log_log.png}
+    \caption{Degree distribution of the "mouse-kasthuri-graph-v4" dataset in log scale.}
+    \label{fig:deg_dist}
+\end{figure}
+
+\pagebreak
+
+\subsection{Degree Metrics}
+
+The degree of a node is a fundamental measure in network analysis, indicative of the node's connectivity. In this network:
+
+\begin{itemize}
+    \item \textbf{Maximum Degree:} 123, showing the highest connectivity for a single node.
+    \item \textbf{Minimum Degree:} 1, indicating the lowest connectivity.
+    \item \textbf{Natural Logarithm of Node Count (\(\ln N\)):} Approximately 6.94, which helps in understanding the logarithmic scale of connectivity.
+\end{itemize}
+
+\subsection{Triangle Count}
+
+The number of triangles in the network is a measure of local cohesiveness. For this dataset:
+\begin{itemize}
+    \item \textbf{Number of Triangles:} 0, indicating no closed triplets of connected nodes. This absence of triangles suggests a lack of clustering typically seen in random networks.
+\end{itemize}
+
+These basic structural properties set the foundation for more detailed network analysis, such as centrality measures, path analysis, and community detection.
+
+
+\subsection{Centrality Measures}
+
+Centrality measures were computed to identify critical nodes within the network. Key findings include:
+
+\begin{itemize}
+    \item \textbf{Betweenness Centrality:} Nodes with high betweenness centrality were identified, indicating their role as significant points of control and flow within the network. These nodes are critical for the transfer of information across different parts of the brain.
+    \item \textbf{Closeness Centrality:} Nodes with high closeness centrality have shorter paths to all other nodes in the network, suggesting their importance in efficient communication.
+    \item \textbf{Eigenvector Centrality:} Some nodes showed high eigenvector centrality, which highlights their influence over the network by being connected to other highly connected nodes.
+\end{itemize}
+\subsection{Centrality Analysis}
+
+Centrality metrics are crucial for understanding the influence of individual nodes within a network. This analysis focuses on four key centrality measures: degree, betweenness, closeness, and eigenvector centrality.
+
+\subsubsection{Degree Centrality}
+
+Degree centrality measures the number of direct connections a node has. The node with the highest degree centrality in our network is node 6, which indicates that it has the most direct connections to other nodes, making it a critical point of connectivity. The top 10 nodes by degree centrality are:
+
+\csvautotabular{../out/data/degree_centrality.csv}
+
+\subsubsection{Betweenness Centrality}
+
+Betweenness centrality identifies nodes that serve as bridges along the shortest paths between other nodes. Node 6 also exhibits the highest betweenness centrality, underscoring its role in facilitating communication across the network. The top nodes by betweenness centrality are:
+
+\csvautotabular{../out/data/betweenness_centrality.csv}
+
+
+\subsubsection{Closeness Centrality}
+
+Closeness centrality measures how quickly a node can access all other nodes in the network. Again, node 6 ranks highest, indicating it has the shortest paths to all other nodes, which enhances its communication speed. Top nodes by closeness centrality include:
+
+\csvautotabular{../out/data/closeness_centrality.csv}
+
+\subsubsection{Eigenvector Centrality}
+
+Eigenvector centrality considers not only the quantity of direct connections a node has but also the quality, as determined by the centrality of its neighbors. Node 6 dominates this measure as well, suggesting it is connected to many highly connected neighbors. The top performers are:
+
+\begin{tabular}{c c}
+\textbf{Node} & \textbf{Eigenvector Centrality} \\
+6 & 0.6212 \\
+83 & 0.2051 \\
+92 & 0.1472 \\
+\vdots & \vdots \\
+112 & 0.0788 \\
+378 & 0.0777 \\
+\end{tabular}
+
+This analysis highlights the significant role of node 6 in this network, with its exceptional centrality across all measures pointing to its central role in network dynamics.
+
+
+
+\subsection{Community Detection}
+
+Community detection algorithms were applied to identify modular structures within the network. The Louvain method revealed several densely interconnected communities, suggesting functional compartmentalization within the brain. These communities could correspond to groups of neurons that co-activate during specific types of neural processing.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../out/img/community-Louvain-1.png}
+    \caption{Community structure of the "mouse-kasthuri-graph-v4" dataset identified using the Louvain method.}
+    \label{fig:community}
+\end{figure}
+
+\subsection{Path Analysis}
+
+The network's path analysis indicated:
+\begin{itemize}
+    \item \textbf{Average Path Length:} The average path length across the network is relatively short, facilitating quick transmission of signals across the network.
+    \item \textbf{Network Diameter:} The diameter of the network, or the longest shortest path, was also measured, providing insights into the maximum separation between any two nodes.
+\end{itemize}
+
+\subsection{Network Density and Assortativity}
+
+The analysis also covered network density and assortativity:
+\begin{itemize}
+    \item \textbf{Network Density:} The network exhibits a low density, which is typical for large biological networks where not all nodes are directly connected.
+    \item \textbf{Assortativity:} The network showed a neutral assortativity coefficient, indicating a balance between connectivity among similar and dissimilar nodes.
+\end{itemize}
+
+\subsection{Comparison with Theoretical Models}
+
+Finally, the network was compared with theoretical models such as random and scale-free networks. This comparison helped to contextualize the unique features of the brain network against well-understood network models, highlighting its non-random, scale-free nature.
+
+These analyses provide deep insights into the structural and functional organization of the mouse brain's somatosensory cortex, revealing complex connectivity patterns that could be fundamental to understanding neurological functions and disorders.
+
+
+\end{document}
